@@ -281,8 +281,17 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const arr = [...ccn.toString()];
+  const result = arr.reduce((accum, item, idx) => {
+    let itm = +item;
+    if ((arr.length - idx) % 2 === 0) {
+      itm *= 2;
+      if (itm > 9) itm -= 9;
+    }
+    return accum + itm;
+  }, 0);
+  return result % 10 === 0;
 }
 
 /**
@@ -325,8 +334,11 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  let result;
+  const templ = /\[\]|\{\}|\(\)|<>/g;
+  while (str.match(templ) != null) result = str.replace(templ, '');
+  return result.length === 0;
 }
 
 
@@ -367,8 +379,17 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const result = [];
+  const urls = pathes.map((item) => [...item]);
+  urls[0].some((item, idx) => {
+    if (urls.every((itm, index, array) => array[index][idx] !== item)) {
+      return true;
+    }
+    result.push(item);
+    return false;
+  });
+  return result.join('').slice(0, result.lastIndexOf('/') + 1);
 }
 
 
